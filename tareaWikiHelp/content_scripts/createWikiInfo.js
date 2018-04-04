@@ -22,6 +22,7 @@ class createWikiInfo{
         let wikiSearchPromise;
 
 
+        
         wordsToFetch.forEach(function(value)
         { 
             value.innerHTML.trim().split(" ").forEach(function(word)
