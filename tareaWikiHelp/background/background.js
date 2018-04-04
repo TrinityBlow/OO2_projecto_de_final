@@ -1,10 +1,6 @@
 
+browser.browserAction.onClicked.addListener(wikiList);
 
-function wikiList(){
-  chrome.tabs.executeScript({
-    file: "content_scripts/createWikiInfo.js"
-  });
-}
-
-chrome.browserAction.onClicked.addListener(wikiList);
-
+function wikiList(tab){
+  browser.tabs.sendMessage(tab.id,"null");
+};

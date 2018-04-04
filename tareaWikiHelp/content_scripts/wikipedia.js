@@ -3,9 +3,22 @@ class wikipedia{
 
   constructor() {}
 
-  moreThanOneAnswerd(nodeHTML) {
-    var i = 0;
-    var wikiSearchList = [];
+  callbackWiki (call1, call2,xmlHttp,word){
+   
+    console.log("d");
+    let parser = new DOMParser()
+    let divElements = parser.parseFromString(xmlHttp.responseText, "text/html");
+    let nodeHTML = divElements.getElementsByClassName("mw-search-result-heading");
+    if(nodeHTML.length > 0){
+      return call1(nodeHTML);
+    } else if (divElements.getElementsByClassName("mw-search-nonefound").length == 0) {
+      return call2(word);
+    }
+  }
+
+  static moreThanOneAnswerd(nodeHTML) {
+    let i = 0;
+    let wikiSearchList = [];
     while (i < nodeHTML.length && i < 5) {
       wikiSearchList.push({"title": nodeHTML[i].firstChild.title, "pathname":nodeHTML[i].firstChild.pathname});
       i++;
@@ -13,32 +26,28 @@ class wikipedia{
     return wikiSearchList;
   }
 
-  oneAnswerd(word){
-    var path = "/wiki/".concat(word);
-    var wikiSearchList = [
+  static oneAnswerd(word){
+    let path = "/wiki/".concat(word);
+    let wikiSearchList = [
       {"title": word, "pathname":path}];
     return wikiSearchList;
   }
 
-  requestHTMLFromWiki(word){
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", 'https://es.wikipedia.org/w/index.php?search='.concat(word), false ); // false for synchronous request
-    xmlHttp.send( null );
-    var parser = new DOMParser()
-    return parser.parseFromString(xmlHttp.responseText, "text/html");
-  }
-
   searchWikipediaWord(word){
-    var divElements = this.requestHTMLFromWiki(word);
-    var nodeHTML = divElements.getElementsByClassName("mw-search-result-heading");
-    if(nodeHTML.length > 0){
-      return this.moreThanOneAnswerd(nodeHTML);
-    } else if (divElements.getElementsByClassName("mw-search-nonefound").length == 0) {
-      return this.oneAnswerd(word);
-    }
+    return fetch('https://es.wikipedia.org/w/index.php?search='.concat(word))
+    .then(function(response) {
+      return (response.text());
+    })
+    .then(function(htmlText) {
+      let parser = new DOMParser()
+      let divElements = parser.parseFromString(htmlText, "text/html");
+      let nodeHTML = divElements.getElementsByClassName("mw-search-result-heading");
+      if(nodeHTML.length > 0){
+        return wikipedia.moreThanOneAnswerd(nodeHTML);
+      } else if (divElements.getElementsByClassName("mw-search-nonefound").length == 0) {
+        return wikipedia.oneAnswerd(word);
+      }
+    });
   }
-
-
-
 
 }
