@@ -9,11 +9,17 @@ class wikiInfoPanel{
         this.wikiPanel = document.createElement("div");
         document.body.insertBefore(this.wikiPanel, document.body.childNodes[0]);
         this.wikiPanel.setAttribute("id", "wikiList");
+        this.wikiPanel.setAttribute("class", "modal");
+
+        this.wikiPanelContent = document.createElement("div");
+        this.wikiPanel.appendChild(this.wikiPanelContent);
+        this.wikiPanelContent.setAttribute("class", "modal-content");
+        this.wikiPanel.style.display = "block";
       }
 
     addWikiSeachToPanel(wikiSearch){
         if(wikiSearch != undefined){
-            let wikiPanelTemp = this.wikiPanel; //buscar una mejor manera de pasar la variable al callback
+            let wikiPanelTemp = this.wikiPanelContent; //buscar una mejor manera de pasar la variable al callback
             wikiSearch.forEach(function(wikiWord) 
             {
                 let wikiLink = document.createElement("a");

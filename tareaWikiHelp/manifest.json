@@ -20,7 +20,8 @@
         "content_scripts/wikiInfoPanel.js",
         "content_scripts/createWikiInfo.js",
         "content_scripts/wikipedia.js"
-      ]
+      ],
+      "css": [ "content_scripts/modal.css" ]
     }
   ],
 

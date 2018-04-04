@@ -2,10 +2,11 @@
 
 class createWikiInfo{
     
-    constructor() {   
+    constructor() { 
     }
 
     static createWikiPanel (message, sender, sendResponse){
+
         if (document.getElementById("wikiList") != null){
             document.getElementById("wikiList").remove();
         }
@@ -22,7 +23,7 @@ class createWikiInfo{
         let wikiSearchPromise;
 
 
-        
+
         wordsToFetch.forEach(function(value)
         { 
             value.innerHTML.trim().split(" ").forEach(function(word)
@@ -39,8 +40,16 @@ class createWikiInfo{
                 wikiPanelCreator.addWikiSeachToPanel(wikiSearch);
             });
         });
+        
     }
+
 
 }
 
+
 browser.runtime.onMessage.addListener(createWikiInfo.createWikiPanel);
+window.onclick = function(event) {
+    if (event.target == document.getElementById("wikiList")) {
+        document.getElementById("wikiList").style.display = "none";
+    }
+}  
