@@ -1,34 +1,58 @@
 
 class wikiInfoPanel{
     
-      constructor() {
+    createWikiPanel(){
+        let wikiPanel = document.createElement("div");
+        document.body.insertBefore(wikiPanel, document.body.childNodes[0]);
+        wikiPanel.setAttribute("id", "wikiList");
+        wikiPanel.setAttribute("class", "modal");
+        this.createWikiPanelContent(wikiPanel);
+        return wikiPanel;
+    }
+
+    createWikiPanelContent(wikiPanel){
+        let wikiPanelContent = document.createElement("div");
+        wikiPanel.appendChild(wikiPanelContent);
+        wikiPanelContent.setAttribute("class", "modal-content");
+        wikiPanel.style.display = "block";
+    }
+
+    constructor() {   
         if (document.getElementById("wikiList") != null){
             document.getElementById("wikiList").remove();
         }
-
-        this.wikiPanel = document.createElement("div");
-        document.body.insertBefore(this.wikiPanel, document.body.childNodes[0]);
-        this.wikiPanel.setAttribute("id", "wikiList");
-        this.wikiPanel.setAttribute("class", "modal");
-
-        this.wikiPanelContent = document.createElement("div");
-        this.wikiPanel.appendChild(this.wikiPanelContent);
-        this.wikiPanelContent.setAttribute("class", "modal-content");
-        this.wikiPanel.style.display = "block";
+        this.wikiPanel = this.createWikiPanel();
       }
-
-    addWikiSeachToPanel(wikiSearch){
+ 
+    insertWikiSeachToPanel(wikiSearch){
         if(wikiSearch != undefined){
-            let wikiPanelTemp = this.wikiPanelContent; //buscar una mejor manera de pasar la variable al callback
-            wikiSearch.forEach(function(wikiWord) 
-            {
-                let wikiLink = document.createElement("a");
+            let i, wikiWord, wikiLink;
+            for (i = 0; i < wikiSearch.length; i++) {
+                wikiWord = wikiSearch[i];
+                wikiLink = document.createElement("a");
                 wikiLink.innerHTML = wikiWord.title;
                 wikiLink.href = "https://es.wikipedia.org".concat(wikiWord.pathname);
-                wikiPanelTemp.appendChild(wikiLink);
-                wikiPanelTemp.appendChild(document.createElement("br"));
-            });
-            wikiPanelTemp.appendChild(document.createElement("br"));
+                this.wikiPanel.firstChild.appendChild(wikiLink);
+                this.wikiPanel.firstChild.appendChild(document.createElement("br"));
+            }
+            this.wikiPanel.firstChild.appendChild(document.createElement("br"));
         }
     }
+
 }
+
+
+
+/*
+wikiSearch.forEach(function(wikiWord) 
+{
+    console.log(this);
+    let wikiLink = document.createElement("a");
+    wikiLink.innerHTML = wikiWord.title;
+    wikiLink.href = "https://es.wikipedia.org".concat(wikiWord.pathname);
+    this.wikiPanel.firstChild.appendChild(wikiLink);
+    this.wikiPanel.firstChild.appendChild(document.createElement("br"));
+}[this]);
+this.wikiPanel.firstChild.appendChild(document.createElement("br"));
+
+*/

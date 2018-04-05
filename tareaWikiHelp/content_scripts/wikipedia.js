@@ -2,21 +2,8 @@
 class wikipedia{
 
   constructor() {}
-
-  callbackWiki (call1, call2,xmlHttp,word){
-   
-    console.log("d");
-    let parser = new DOMParser()
-    let divElements = parser.parseFromString(xmlHttp.responseText, "text/html");
-    let nodeHTML = divElements.getElementsByClassName("mw-search-result-heading");
-    if(nodeHTML.length > 0){
-      return call1(nodeHTML);
-    } else if (divElements.getElementsByClassName("mw-search-nonefound").length == 0) {
-      return call2(word);
-    }
-  }
-
-  static moreThanOneAnswerd(nodeHTML) {
+  
+  static parseMultipleWikiResult(nodeHTML) {
     let i = 0;
     let wikiSearchList = [];
     while (i < nodeHTML.length && i < 5) {
@@ -26,13 +13,13 @@ class wikipedia{
     return wikiSearchList;
   }
 
-  static oneAnswerd(word){
+  static parseOneWikiResult(word){
     let path = "/wiki/".concat(word);
     let wikiSearchList = [
       {"title": word, "pathname":path}];
     return wikiSearchList;
   }
-
+ 
   searchWikipediaWord(word){
     return fetch('https://es.wikipedia.org/w/index.php?search='.concat(word))
     .then(function(response) {
@@ -40,12 +27,12 @@ class wikipedia{
     })
     .then(function(htmlText) {
       let parser = new DOMParser()
-      let divElements = parser.parseFromString(htmlText, "text/html");
-      let nodeHTML = divElements.getElementsByClassName("mw-search-result-heading");
-      if(nodeHTML.length > 0){
-        return wikipedia.moreThanOneAnswerd(nodeHTML);
-      } else if (divElements.getElementsByClassName("mw-search-nonefound").length == 0) {
-        return wikipedia.oneAnswerd(word);
+      let wikiSearchHTML = parser.parseFromString(htmlText, "text/html");
+      let nodesHTML = wikiSearchHTML.getElementsByClassName("mw-search-result-heading");
+      if(nodesHTML.length > 0){
+        return wikipedia.parseMultipleWikiResult(nodesHTML);
+      } else if (wikiSearchHTML.getElementsByClassName("mw-search-nonefound").length == 0) {
+        return wikipedia.parseOneWikiResult(word);
       }
     });
   }
