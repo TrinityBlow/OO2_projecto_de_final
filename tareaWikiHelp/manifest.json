@@ -5,7 +5,7 @@
   "version": "1.0",
 
   "icons": {
-    "48": "icons/border-48.png"
+    "48": "resources/border-48.png"
   },
   
   "permissions": [
@@ -21,7 +21,7 @@
         "content_scripts/createWikiInfo.js",
         "content_scripts/wikipedia.js"
       ],
-      "css": [ "content_scripts/modal.css" ]
+      "css": [ "resources/modal.css" ]
     }
   ],
 
@@ -35,8 +35,8 @@
 
   "browser_action": {
     "default_icon": {
-      "16": "icons/border-16.png",
-      "32": "icons/border-32.png"
+      "16": "resources/border-16.png",
+      "32": "resources/border-32.png"
     }
   }
 
